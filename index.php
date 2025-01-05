@@ -14,9 +14,18 @@
 
             require "modelo/conexion.php";
             include "controlador/controlador_subir.php";
+            include "controlador/controlador_editar.php";
+            include "controlador/controlador_eliminar.php";
             $sql= $conexion->query("SELECT * FROM img");
 
         ?>
+
+        <script>
+            function validar(){
+                let res=confirm("Estas seguro de elimnar .... ");
+                return res;
+            }
+        </script>
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -61,10 +70,29 @@
                             <th scope="row"><?= $datos->idimg ?></th>
                             <td><img src="<?= $datos->foto ?>" width="80" alt=""></td>
                             <td>
-                                <a href="" class="btn btn-warning">Editar</a>
-                                <a href="" class="btn btn-danger">Eliminar</a>
+                                <a href="" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModaleditar<?= $datos->idimg ?>">Editar</a>
+                                <a href="index.php?id=<?= $datos->idimg ?>&nombre=<?= $datos->foto ?>" class="btn btn-danger" onclick="return validar();">Eliminar</a>
                             </td>
                             </tr>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModaleditar<?= $datos->idimg ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar imagen.</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" value=" <?= $datos->idimg ?>" name="id" id="">
+                                        <input type="hidden" value="<?= $datos->foto ?>" name="nombre">
+                                        <input class="form-control mb-2" type="file" id="formFile" name="imagen">
+                                        <input type="submit" value="subida" name="btnEditar" class="btn btn-success form-control">
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                             <?php } ?>
                         </tbody>
                     </table>
